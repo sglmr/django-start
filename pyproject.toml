@@ -1,0 +1,27 @@
+[project]
+requires-python = ">=3.11"
+
+[tool.ruff]
+line-length = 88
+
+[tool.pytest.ini_options]
+django_debug_mode = true
+DJANGO_SETTINGS_MODULE = "config.settings"
+addopts = ""
+# addopts = " -n auto  --cov --cov-report=term"
+
+[tool.coverage.run]
+source = ["."]
+
+
+[tool.coverage.report]
+fail_under = 90
+show_missing = true
+skip_covered = true
+sort = "Miss"
+precision = 1
+omit = [
+    "manage.py",
+    "config/*",
+    "*/tests/*",
+    ]
