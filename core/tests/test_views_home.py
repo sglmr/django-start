@@ -6,7 +6,7 @@ from pytest_django.asserts import assertContains, assertNotContains, assertTempl
 rel_url = "/"
 url_name = "home"
 templates = ["core/index.html"]
-contains = ["home"]
+contains = ["Home"]
 excludes = ["should not  be here"]
 
 
