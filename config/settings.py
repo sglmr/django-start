@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from django.core.management.utils import get_random_secret_key
+from django.urls import reverse_lazy
 from environs import Env
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,7 +32,6 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     # Installed Apps
-    "authtools",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
@@ -42,7 +42,7 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
-AUTH_USER_MODEL = "accounts.User"
+AUTH_USER_MODEL = "accounts.Account"
 
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -57,18 +57,18 @@ if DEPLOY:
     ACCOUNT_EMAIL_VERIFICATION = "mandatory"
     ACCOUNT_CONFIRM_EMAIL_ON_GET = True
     ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
-ACCOUNT_AUTHENTICATION_METHOD = "email"
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_AUTHENTICATION_METHOD = "username"
+ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400  # 1 day in seconds
-ACCOUNT_ALLOW_SIGNUPS = env.bool("DJANGO_ALLOW_SIGNUPS", False)
+ACCOUNT_ALLOW_SIGNUPS = env.bool("ACCOUNT_ALLOW_SIGNUPS", False)
 ACCOUNT_ADAPTER = "accounts.account_adapter.CustomAccountAdapter"
 
+LOGIN_REDIRECT_URL = reverse_lazy("home")
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -203,3 +203,8 @@ if DEPLOY:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
+
+
+# Email Config
+if not DEPLOY:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

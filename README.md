@@ -11,7 +11,6 @@ Comes pre-configured with:
 - Django==4.2
 - environs[django] for handling environment variables
 - django-allauth for authentication
-- django-authtools for custom users
 - whitenoise[brotli] for static files
 - pytest + a whole bunch of plugins for testing
 - black & ruff
